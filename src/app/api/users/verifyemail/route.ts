@@ -9,6 +9,7 @@ try {
     const reqBody = await request.json();
     const {token} = reqBody
     console.log("token = ", token)
+    //$gt: Date.now() - Checks if the current time is greater than the expiry time set for the token
     const user = await User.findOne({verifyToken:token, verifyTokenExpiry: {$gt: Date.now()}});
     if(!user){
         return NextResponse.json({error: "Invalid token"});

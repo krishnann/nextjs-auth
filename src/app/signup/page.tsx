@@ -14,6 +14,7 @@ export default function signupPage() {
     password: "",
   });
 
+  // this is to disable the button if the user doesn't fill all the fields
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -24,7 +25,7 @@ export default function signupPage() {
       const response = await axios.post("/api/users/signup", user);
       console.log("Sign up response: ", response.data);
       toast.success("Sign up successful!");
-      router.push("/login");
+      router.push("/verify");// user is redirected to the verify page after successful sign up
     } catch (error:any) {
       console.error("Sign up failed - ERROR:: ", error.message);
     }

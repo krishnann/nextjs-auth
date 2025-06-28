@@ -8,6 +8,7 @@ const isPathLocal = path === '/login' || path === '/signup' || path === '/verify
 
 //check if the token is set or not 
 const token = request.cookies.get('token');
+console.log("Token from cookies: ", token ? token.value : "No token found");
 if(isPathLocal && token){
   return NextResponse.redirect(new URL('/profile', request.nextUrl))
 }else if(!isPathLocal && !token){

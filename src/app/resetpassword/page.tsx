@@ -4,24 +4,30 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
   
-const login = () => {
+const resetPasswordPage = () => {
   const router = useRouter();
 
   const [user, setUser] = useState({
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
-  const onLogin = async()=>{
+  const onResetPassword = async()=>{
     try {
       setLoading(true);
-      const response = await axios.post("/api/users/login", user);
-      console.log("LogIn response: ", response.data);
-      toast.success("LogIn successful!");
+      if (user.password !== user.confirmPassword) {
+        setLoading(false);
+        toast.error("Passwords do not match");
+        return;
+      }
+      const response = await axios.post("/api/users/resetpassword", user);
+      console.log("Reset Password response: ", response.data);
+      toast.success("Reset Password email sent!");
       router.push("/profile");
     } catch (error:any) {
       setLoading(false);
@@ -41,7 +47,7 @@ const login = () => {
   return (
        <div>
       <div className='max-w-md mx-auto my-10 p-5 border rounded-lg shadow-lg bg-zinc-900'>
-      <h1 className="text-2xl font-bold mb-4">{loading ? "Loading..." : "LogIn"}</h1>
+      <h1 className="text-2xl font-bold mb-4">{loading ? "Loading..." : "Reset Password"}</h1>
       <div className="mb-4">
         <label className="block mb-2">Email</label>
         <input
@@ -60,12 +66,21 @@ const login = () => {
           className="border p-2 w-full"
         />
       </div>
+            <div className="mb-4">
+        <label className="block mb-2">Confirm Password</label>
+        <input
+          type="password"
+          value={user.confirmPassword}
+          onChange={(e) => setUser({...user, confirmPassword: e.target.value})}
+          className="border p-2 w-full"
+        />
+      </div>
       <button
-        onClick={onLogin}
+        onClick={onResetPassword}
         disabled={buttonDisabled || loading}
         className={`bg-blue-500 text-white p-2 rounded ${buttonDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
-        {loading ? "Logging in..." : "Log In"}
+        {loading ? "Loading..." : "Reset Password"}
       </button>
         <div className='my-10 p-5 border rounded-lg shadow-lg bg-zinc-900'>
         <p className='text-sm'>Forgot your password? <a href="/forgotpassword" className='text-blue-500'>Reset Password</a></p>
@@ -77,4 +92,4 @@ const login = () => {
   )
 }
 
-export default login
+export default resetPasswordPage

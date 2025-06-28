@@ -7,7 +7,6 @@ import { sendEmail } from "@/helpers/mailer";
 connectDB();
 
 //Sign up will get the user registeration details such as username, email, password etc
-
 export async function POST(request: NextRequest) {
 try {
     // Get the details of the user and insert it in the db, First check if the user already exisit in the db or not

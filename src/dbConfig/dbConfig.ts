@@ -13,7 +13,6 @@ export async function connectDB(){
             console.log("ERROR:: "+error);
             process.exit();
         })
-        
     } catch (error) {
         console.log('DB Connection Error!!');
         console.log(error);
